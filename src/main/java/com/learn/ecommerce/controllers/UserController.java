@@ -39,7 +39,7 @@ public class UserController {
 	@GetMapping
 	public ResponseEntity<List<UserDto>> getAllUsers()
 	{
-		return null;
+		return new  ResponseEntity<List<UserDto>>(userService.getAllUsers(),HttpStatus.OK);
 	}
 	
 //	=====================================================================
@@ -48,7 +48,7 @@ public class UserController {
 	@GetMapping("/{id}")
 	public ResponseEntity<UserDto> getUserById(@PathVariable String id)
 	{
-		return null;
+		return new ResponseEntity<UserDto>(userService.getUserById(id),HttpStatus.FOUND);
 	}
 	
 //	=====================================================================

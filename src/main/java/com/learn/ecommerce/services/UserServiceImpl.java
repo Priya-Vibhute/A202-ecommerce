@@ -1,13 +1,18 @@
 package com.learn.ecommerce.services;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.learn.ecommerce.dtos.UserDto;
 import com.learn.ecommerce.entities.User;
+import com.learn.ecommerce.exceptions.IdNotFoundException;
 import com.learn.ecommerce.repositories.UserRepository;
 
 @Service
@@ -35,14 +40,26 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto getUserById(String id) {
+		Optional<User> user = userRepository.findById(id);
+	
+		User fetchedUser = user.orElseThrow(()->new IdNotFoundException("Id not found"));
 		
-		return null;
+		return entityToDto(fetchedUser);
 	}
 
 	@Override
 	public List<UserDto> getAllUsers() {
 		
-		return null;
+		//It will return all objects stored in user table
+	    List<User> users = userRepository.findAll();
+	    
+	  
+	    List<UserDto> userDtoList = users.stream()
+	    .map((user)->entityToDto(user))
+	    .collect(Collectors.toList());
+	    
+				
+		return userDtoList;
 	}
 
 	@Override
