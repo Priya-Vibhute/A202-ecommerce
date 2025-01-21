@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.learn.ecommerce.dtos.UserDto;
 import com.learn.ecommerce.services.UserService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/users")
 public class UserController {
@@ -28,7 +31,7 @@ public class UserController {
 //	To add user (POST:http://localhost:8080/users)
 //	=====================================================================
 	@PostMapping
-	public ResponseEntity<UserDto> addUser(@RequestBody UserDto userDto){
+	public ResponseEntity<UserDto> addUser(@Valid @RequestBody UserDto userDto){
 		UserDto savedDto = userService.createUser(userDto);
 		return new ResponseEntity<UserDto>(savedDto,HttpStatus.CREATED);
 	}
@@ -57,7 +60,8 @@ public class UserController {
 	@PutMapping("/{id}")
 	public ResponseEntity<UserDto> updateUser(@PathVariable String id,@RequestBody UserDto userDto)
 	{
-		return null;
+		return new ResponseEntity<UserDto>(userService.updateUser(id, userDto),
+				                   HttpStatus.OK);
 	}
 	
 //	=====================================================================
@@ -67,7 +71,9 @@ public class UserController {
 	@DeleteMapping("/{id}")
 	public ResponseEntity<UserDto> deleteUser(@PathVariable String id)
 	{
-		return null;
+		UserDto userDto = userService.getUserById(id);
+		userService.deleteUserById(id);
+		return new ResponseEntity<UserDto>(userDto,HttpStatus.OK);
 	}
 	
 

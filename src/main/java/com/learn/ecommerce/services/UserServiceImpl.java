@@ -64,13 +64,29 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public UserDto updateUser(String id, UserDto userDto) {
+		User user = userRepository.findById(id)
+		.orElseThrow(()->new IdNotFoundException("Id not found"));
 		
-		return null;
+		user.setFirstName(userDto.getFirstName());
+		user.setLastName(userDto.getLastName());
+		user.setAge(userDto.getAge());
+		user.setEmail(userDto.getEmail());
+		user.setPassword(userDto.getPassword());
+		user.setPhoneNo(userDto.getPhoneNo());
+		user.setAddress(userDto.getAddress());
+		
+		User updatedUser = userRepository.save(user);
+		
+		return entityToDto(updatedUser);
 	}
 
 	@Override
 	public void deleteUserById(String id) {
 		
+		User user = userRepository.findById(id)
+				.orElseThrow(()->new IdNotFoundException("Id not found"));
+		
+		userRepository.delete(user);
 		
 	}
 
@@ -84,6 +100,7 @@ public class UserServiceImpl implements UserService{
 		user.setAge(userDto.getAge());
 		user.setEmail(userDto.getEmail());
 		user.setPhoneNo(userDto.getPhoneNo());
+		user.setAddress(userDto.getAddress());
 		
 		return user;
 	}
@@ -99,6 +116,8 @@ public class UserServiceImpl implements UserService{
 		userDto.setEmail(user.getEmail());
 		userDto.setAge(user.getAge());
 		userDto.setPhoneNo(user.getPhoneNo());
+		userDto.setAddress(user.getAddress());
+		
 		return userDto;
 	}
 
