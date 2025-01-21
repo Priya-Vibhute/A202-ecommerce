@@ -1,5 +1,7 @@
 package com.learn.ecommerce.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -36,6 +38,7 @@ public class Address {
 	private int pincode;
 	
 	@OneToOne(mappedBy = "address")
+	@JsonBackReference
 	private User user;
 
 	
